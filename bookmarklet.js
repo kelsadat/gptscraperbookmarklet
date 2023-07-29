@@ -1,4 +1,4 @@
-function Chat(updTime) {
+function Chat(updTime=1) {
   const pthis = {};
 
   pthis.updateTime = updTime;
@@ -149,17 +149,18 @@ function createGUI() {
       const percentDone = (((i+1)*100/prompts.length) - (100/prompts.length)).toFixed(1);
       goButton.textContent = `going ${percentDone}% ${i}/${prompts.length}`;
       progressDiv.style.width = `${percentDone}%`;
-      const prompt = prompts[i];
+      const prompt = prompts[i].trim();
+      if (!prompt.length) {continue};
       const response = await chat.ask(prompt);
       response.content = response.content.slice(9, response.content.length+1);
       if (postToDiscordCheckbox.checked) {
         for (let i = 0; i < response.content.length; i+= 2000) {
           const embed = {
-            title : prompt,
             description : response.content.slice(i, i+2000),
             color : 0x3737cf,
-            footer : {text : `page ${i+1}`}
+            footer : {text : `page ${(i/2000)+1}`}
           };
+          if (i == 0) {embed.title = prompt};
           fetch(webhookurl, {method : "POST", headers : {"Content-type" : "application/json"}, body : JSON.stringify({embeds : [embed]})});
         };
       };
@@ -175,3 +176,4 @@ function createGUI() {
 };
 
 createGUI();
+
