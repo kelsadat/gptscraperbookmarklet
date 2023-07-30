@@ -70,7 +70,7 @@ function Chat(updTime=1) {
       await new Promise((resolve) => {
         setTimeout(resolve, pthis.updateTime * 1000)
       });
-      const resetButton = document.querySelector("button.btn.relative.btn-primary.m-auto[as=button]");
+      const resetButton = document.querySelector("button.btn.btn-primary[as=button]");
       if (resetButton) {resetButton.dispatchEvent(new MouseEvent("click", {bubbles : true, cancelable : true})); continue};
       const chat = pthis.getChat();
       let newResponse = null;
